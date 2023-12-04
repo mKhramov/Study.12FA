@@ -1,4 +1,6 @@
+using FluentValidation;
 using Microsoft.EntityFrameworkCore;
+using Study.TFA.API.Middlewares;
 using Study.TFA.Domain;
 using Study.TFA.Domain.Authentication;
 using Study.TFA.Domain.Authorization;
@@ -24,6 +26,8 @@ builder.Services.AddScoped<IIdentityProvider, IdentityProvider>();
 builder.Services.AddScoped<IGuidFactory, GuidFactory>();
 builder.Services.AddScoped<IMomentProvider, MomentProvider>();
 
+builder.Services.AddValidatorsFromAssemblyContaining<Study.TFA.Domain.Models.Forum>();
+
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -38,5 +42,7 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.UseMiddleware<ErrorHandlingMiddleware>();
 
 app.Run();
