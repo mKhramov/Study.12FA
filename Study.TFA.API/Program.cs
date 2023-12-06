@@ -1,37 +1,38 @@
-using FluentValidation;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
+using Serilog.Filters;
 using Study.TFA.API.Middlewares;
-using Study.TFA.Domain;
-using Study.TFA.Domain.Authentication;
-using Study.TFA.Domain.Authorization;
-using Study.TFA.Domain.UseCases.CreateTopic;
-using Study.TFA.Domain.UseCases.GetForums;
-using Study.TFA.Storage;
-using Study.TFA.Storage.Storages;
+using Study.TFA.Domain.DependencyInjection;
+using Study.TFA.Storage.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+// Logging configuration
+builder.Services.AddLogging(b => b.AddSerilog(new LoggerConfiguration()
+    .MinimumLevel.Debug()
+    .Enrich.WithProperty("Application", "Study.TFA.API")
+    .Enrich.WithProperty("Environment", builder.Environment.EnvironmentName)
+    .WriteTo.Logger(lc => lc
+        .Filter.ByExcluding(Matching.FromSource("Microsoft"))
+        .WriteTo.OpenSearch(
+            nodeUris: builder.Configuration.GetConnectionString("Logs"),
+            indexFormat: "forum-logs-{0:yyyy.MM.dd}"))
+    .WriteTo.Logger(lc => lc
+        .Filter.ByIncludingOnly(Matching.FromSource("Microsoft"))
+        .WriteTo.OpenSearch(
+            nodeUris: builder.Configuration.GetConnectionString("Logs"),
+            indexFormat: "forum-dbquery-logs-{0:yyyy.MM.dd}"))
+    .WriteTo.Logger(lc => lc.WriteTo.Console())
+    .CreateLogger()));
 
-builder.Services.AddScoped<IGetForumsUseCase, GetForumsUseCase>();
-builder.Services.AddScoped<IGetForumsStorage, GetForumsStorage>();
 
-builder.Services.AddScoped<ICreateTopicUseCase, CreateTopicUseCase>();
-builder.Services.AddScoped<ICreateTopicStorage, CreateTopicStorage>();
-
-builder.Services.AddScoped<IIntentionResolver, TopicIntentionResolver>();
-builder.Services.AddScoped<IIntentionManager, IntentionManager>();
-builder.Services.AddScoped<IIdentityProvider, IdentityProvider>();
-
-builder.Services.AddScoped<IGuidFactory, GuidFactory>();
-builder.Services.AddScoped<IMomentProvider, MomentProvider>();
-
-builder.Services.AddValidatorsFromAssemblyContaining<Study.TFA.Domain.Models.Forum>();
+builder.Services
+    .AddForumDomain()
+    .AddForumStorage(builder.Configuration.GetConnectionString("DefaultConnection") ?? string.Empty);
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddDbContextPool<ForumDbContext>(options => options.UseNpgsql(connectionString));
 
 var app = builder.Build();
 

@@ -2,7 +2,7 @@
 
 namespace Study.TFA.Domain.Authorization
 {
-    public class IntentionManager : IIntentionManager
+    internal class IntentionManager : IIntentionManager
     {
         private readonly IEnumerable<IIntentionResolver> resolvers;
         private readonly IIdentityProvider identityProvider;

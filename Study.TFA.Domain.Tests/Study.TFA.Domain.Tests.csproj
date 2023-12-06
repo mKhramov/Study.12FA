@@ -26,7 +26,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Study.TFA.Domain\Study.TFA.Domain.csproj" />
+    <ProjectReference Include="..\Study.TFA.Domain\Study.TFA.Domain.csproj"  PrivateAssets="All"/>
   </ItemGroup>
 
 </Project>

@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
@@ -18,12 +18,16 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="6.0.22" />
+    <PackageReference Include="Serilog.AspNetCore" Version="8.0.0" />
+    <PackageReference Include="Serilog.Sinks.Console" Version="5.0.1" />
+    <PackageReference Include="Serilog.Sinks.OpenSearch" Version="1.0.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Study.TFA.Domain.DependencyInjection\Study.TFA.Domain.DependencyInjection.csproj" />
     <ProjectReference Include="..\Study.TFA.Domain\Study.TFA.Domain.csproj" />
-    <ProjectReference Include="..\Study.TFA.Storage\Study.TFA.Storage.csproj" />
+    <ProjectReference Include="..\Study.TFA.Storage.DependencyInjection\Study.TFA.Storage.DependencyInjection.csproj" />    
   </ItemGroup>
 
 </Project>

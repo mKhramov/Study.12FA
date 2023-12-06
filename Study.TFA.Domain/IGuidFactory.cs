@@ -1,12 +1,7 @@
 ﻿namespace Study.TFA.Domain
 {
-    public interface IMomentProvider
+    public interface IGuidFactory
     {
-        DateTimeOffset Now { get; }
-    }
-
-    public class MomentProvider: IMomentProvider
-    {
-        public DateTimeOffset Now => DateTimeOffset.UtcNow;
+        Guid Create();
     }
 }

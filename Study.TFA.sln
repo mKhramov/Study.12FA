@@ -5,6 +5,9 @@ VisualStudioVersion = 17.7.34031.279
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "solution-items", "solution-items", "{862A33C6-CC2C-4999-9A10-9407881F8816}"
 	ProjectSection(SolutionItems) = preProject
+		docker-compose-with-postgres.yml = docker-compose-with-postgres.yml
+		Directory.Build.props = Directory.Build.props
+		docker-compose.yml = docker-compose.yml
 		README.md = README.md
 	EndProjectSection
 EndProject
@@ -14,7 +17,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Study.TFA.Storage", "Study.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Study.TFA.API", "Study.TFA.API\Study.TFA.API.csproj", "{A1E9B83C-CA75-4F27-A920-A8E92B69A634}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Study.TFA.Domain.Tests", "Study.TFA.Domain.Tests\Study.TFA.Domain.Tests.csproj", "{C07DEF14-0CBD-4544-B498-F702DFD1DADD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Study.TFA.Domain.Tests", "Study.TFA.Domain.Tests\Study.TFA.Domain.Tests.csproj", "{C07DEF14-0CBD-4544-B498-F702DFD1DADD}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Study.TFA.Domain.DependencyInjection", "Study.TFA.Domain.DependencyInjection\Study.TFA.Domain.DependencyInjection.csproj", "{E7B7CE9A-B46F-446A-8ECE-E2E34684326B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Study.TFA.Storage.DependencyInjection", "Study.TFA.Storage.DependencyInjection\Study.TFA.Storage.DependencyInjection.csproj", "{E7D8407F-1D5C-45E0-951E-C8D0CF648295}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -38,6 +45,14 @@ Global
 		{C07DEF14-0CBD-4544-B498-F702DFD1DADD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C07DEF14-0CBD-4544-B498-F702DFD1DADD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C07DEF14-0CBD-4544-B498-F702DFD1DADD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E7B7CE9A-B46F-446A-8ECE-E2E34684326B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E7B7CE9A-B46F-446A-8ECE-E2E34684326B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E7B7CE9A-B46F-446A-8ECE-E2E34684326B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E7B7CE9A-B46F-446A-8ECE-E2E34684326B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E7D8407F-1D5C-45E0-951E-C8D0CF648295}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E7D8407F-1D5C-45E0-951E-C8D0CF648295}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E7D8407F-1D5C-45E0-951E-C8D0CF648295}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E7D8407F-1D5C-45E0-951E-C8D0CF648295}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

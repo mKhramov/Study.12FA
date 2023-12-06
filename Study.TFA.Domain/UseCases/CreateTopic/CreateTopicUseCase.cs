@@ -1,12 +1,11 @@
 ﻿using Study.TFA.Domain.Exceptions;
 using Study.TFA.Domain.Authentication;
 using Study.TFA.Domain.Authorization;
-using Study.TFA.Domain.Models;
 using FluentValidation;
 
 namespace Study.TFA.Domain.UseCases.CreateTopic
 {
-    public class CreateTopicUseCase : ICreateTopicUseCase
+    internal class CreateTopicUseCase : ICreateTopicUseCase
     {
         private readonly IValidator<CreateTopicCommand> validator;
         private readonly IIntentionManager intentionManager;

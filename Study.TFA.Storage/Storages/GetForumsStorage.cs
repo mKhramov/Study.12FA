@@ -3,7 +3,7 @@ using Study.TFA.Domain.UseCases.GetForums;
 
 namespace Study.TFA.Storage.Storages
 {
-    public class GetForumsStorage : IGetForumsStorage
+    internal class GetForumsStorage : IGetForumsStorage
     {
         private readonly ForumDbContext dbContext;
 

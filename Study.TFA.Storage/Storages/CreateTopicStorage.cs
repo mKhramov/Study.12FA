@@ -1,10 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Study.TFA.Domain;
 using Study.TFA.Domain.UseCases.CreateTopic;
 
 namespace Study.TFA.Storage.Storages
 {
-    public class CreateTopicStorage : ICreateTopicStorage
+    internal class CreateTopicStorage : ICreateTopicStorage
     {
         private readonly IGuidFactory guidFactory;
         private readonly IMomentProvider momentProvider;
