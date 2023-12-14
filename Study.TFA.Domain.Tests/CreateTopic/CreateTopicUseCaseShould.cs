@@ -8,24 +8,28 @@ using Study.TFA.Domain.Authorization;
 using Study.TFA.Domain.Exceptions;
 using Study.TFA.Domain.Models;
 using Study.TFA.Domain.UseCases.CreateTopic;
+using Study.TFA.Domain.UseCases.GetForums;
 
-namespace Study.TFA.Domain.Tests
+namespace Study.TFA.Domain.Tests.CreateTopic
 {
     public class CreateTopicUseCaseShould
     {
-        private readonly CreateTopicUseCase sut;        
+        private readonly CreateTopicUseCase sut;
         private readonly Mock<ICreateTopicStorage> storage;
-        private readonly ISetup<ICreateTopicStorage, Task<bool>> forumExistsSetup;
         private readonly ISetup<ICreateTopicStorage, Task<Topic>> createTopicSetup;
+        private readonly Mock<IGetForumsStorage> getForumsStorage;
+        private readonly ISetup<IGetForumsStorage, Task<IEnumerable<Forum>>> getForumsSetup;
         private readonly ISetup<IIdentity, Guid> getCurrentUserIdSetup;
         private readonly Mock<IIntentionManager> intentionManager;
         private readonly ISetup<IIntentionManager, bool> intentionIsAllowedSetup;
 
         public CreateTopicUseCaseShould()
         {
-            storage = new Mock<ICreateTopicStorage>();
-            forumExistsSetup = storage.Setup(s => s.ForumExists(It.IsAny<Guid>(), It.IsAny<CancellationToken>()));
+            storage = new Mock<ICreateTopicStorage>();            
             createTopicSetup = storage.Setup(s => s.CreateTopic(It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<CancellationToken>()));
+
+            getForumsStorage = new Mock<IGetForumsStorage>();
+            getForumsSetup = getForumsStorage.Setup(s => s.GetForums(It.IsAny<CancellationToken>()));
 
             var identity = new Mock<IIdentity>();
             var identityProvider = new Mock<IIdentityProvider>();
@@ -39,7 +43,7 @@ namespace Study.TFA.Domain.Tests
             validator.Setup(x => x.ValidateAsync(It.IsAny<CreateTopicCommand>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(new ValidationResult());
 
-            sut = new CreateTopicUseCase(validator.Object, intentionManager.Object, identityProvider.Object, storage.Object);
+            sut = new (validator.Object, intentionManager.Object, identityProvider.Object, getForumsStorage.Object, storage.Object);
         }
 
         [Fact]
@@ -60,26 +64,26 @@ namespace Study.TFA.Domain.Tests
             var forumId = Guid.Parse("104648EB-2A42-4D6B-98AD-DC293F73500D");
 
             intentionIsAllowedSetup.Returns(true);
-            forumExistsSetup.ReturnsAsync(false);
+            getForumsSetup.ReturnsAsync(Array.Empty<Forum>());
 
             await sut.Invoking(s => s.Execute(new CreateTopicCommand(forumId, "Some Title"), CancellationToken.None))
                 .Should().ThrowAsync<ForumNotFoundException>();
 
-            storage.Verify(s => s.ForumExists(forumId, It.IsAny<CancellationToken>()));
+            getForumsStorage.Verify(s => s.GetForums(It.IsAny<CancellationToken>()));
         }
 
         [Fact]
         public async Task ReturnNewlyCreatedTopic_WhenMatchingForumExists()
-        {            
+        {
             var forumId = Guid.Parse("673DDB47-716E-411F-8AAE-90F89A4A0B73");
             var userId = Guid.Parse("9223E3DB-DE7E-45D1-878D-6BD67DF6D443");
 
             intentionIsAllowedSetup.Returns(true);
-            forumExistsSetup.ReturnsAsync(true);
+            getForumsSetup.ReturnsAsync(new Forum[] { new Forum { Id = forumId } });
             getCurrentUserIdSetup.Returns(userId);
             var expected = new Topic();
-            createTopicSetup.ReturnsAsync(expected);            
-            
+            createTopicSetup.ReturnsAsync(expected);
+
             var actual = await sut.Execute(new CreateTopicCommand(forumId, "Hello World"), CancellationToken.None);
             actual.Should().Be(expected);
 

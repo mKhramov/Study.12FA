@@ -12,15 +12,12 @@ namespace Study.TFA.Storage.Storages
         public CreateTopicStorage(
             IGuidFactory guidFactory,
             IMomentProvider momentProvider,
-            ForumDbContext dbContext )
+            ForumDbContext dbContext)
         {
             this.guidFactory = guidFactory;
             this.momentProvider = momentProvider;
             this.dbContext = dbContext;
         }
-
-        public Task<bool> ForumExists(Guid forumId, CancellationToken cancellationToken) =>
-            dbContext.Forums.AnyAsync(x => x.ForumId == forumId, cancellationToken);
 
         public async Task<Domain.Models.Topic> CreateTopic(Guid forumId, Guid userId, string title, 
             CancellationToken cancellationToken)

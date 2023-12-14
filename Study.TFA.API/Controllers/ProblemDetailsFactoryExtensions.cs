@@ -22,7 +22,7 @@ namespace Study.TFA.API.Controllers
            factory.CreateProblemDetails(httpContext,
                domainException.ErrorCode switch
                {
-                   ErrorCode.Gone => StatusCodes.Status410Gone,
+                   DomainErrorCode.Gone => StatusCodes.Status410Gone,
                    _ => StatusCodes.Status500InternalServerError,
                },
                "Authorization failed",

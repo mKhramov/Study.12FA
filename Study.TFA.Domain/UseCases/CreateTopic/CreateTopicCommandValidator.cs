@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using Study.TFA.Domain.Exceptions;
 
 namespace Study.TFA.Domain.UseCases.CreateTopic
 {
@@ -6,10 +7,10 @@ namespace Study.TFA.Domain.UseCases.CreateTopic
     {
         public CreateTopicCommandValidator()
         {
-            RuleFor(x => x.ForumId).NotEmpty().WithErrorCode("Empty");
+            RuleFor(x => x.ForumId).NotEmpty().WithErrorCode(ValidationErrorCode.Empty);
             RuleFor(x => x.Title).Cascade(CascadeMode.Stop)
-                .NotEmpty().WithErrorCode("Empty")
-                .MaximumLength(100).WithErrorCode("TooLong");
+                .NotEmpty().WithErrorCode(ValidationErrorCode.Empty)
+                .MaximumLength(100).WithErrorCode(ValidationErrorCode.TooLong);
         }
     }
 }

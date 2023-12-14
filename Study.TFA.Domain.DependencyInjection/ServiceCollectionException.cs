@@ -4,6 +4,7 @@ using Study.TFA.Domain.Authentication;
 using Study.TFA.Domain.Authorization;
 using Study.TFA.Domain.UseCases.CreateTopic;
 using Study.TFA.Domain.UseCases.GetForums;
+using Study.TFA.Domain.UseCases.GetTopics;
 
 namespace Study.TFA.Domain.DependencyInjection
 {
@@ -14,6 +15,7 @@ namespace Study.TFA.Domain.DependencyInjection
             services
                 .AddScoped<IGetForumsUseCase, GetForumsUseCase>()
                 .AddScoped<ICreateTopicUseCase, CreateTopicUseCase>()
+                .AddScoped<IGetTopicsUseCase, GetTopicsUseCase>()
                 .AddScoped<IIntentionResolver, TopicIntentionResolver>();
 
             services
@@ -22,6 +24,8 @@ namespace Study.TFA.Domain.DependencyInjection
 
             services
                 .AddValidatorsFromAssemblyContaining<Models.Forum>(includeInternalTypes: true);
+
+            services.AddMemoryCache();
 
             return services;
         }

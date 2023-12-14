@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Study.TFA.Domain.UseCases.CreateTopic;
 using Study.TFA.Domain.UseCases.GetForums;
+using Study.TFA.Domain.UseCases.GetTopics;
 using Study.TFA.Storage.Storages;
 
 namespace Study.TFA.Storage.DependencyInjection
@@ -14,6 +15,7 @@ namespace Study.TFA.Storage.DependencyInjection
             services
                 .AddScoped<IGetForumsStorage, GetForumsStorage>()
                 .AddScoped<ICreateTopicStorage, CreateTopicStorage>()
+                .AddScoped<IGetTopicsStorage, GetTopicsStorage>()
                 .AddScoped<IGuidFactory, GuidFactory>()
                 .AddScoped<IMomentProvider, MomentProvider>()
                 .AddValidatorsFromAssemblyContaining<Domain.Models.Forum>()

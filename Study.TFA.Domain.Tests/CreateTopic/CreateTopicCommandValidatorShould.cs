@@ -1,7 +1,7 @@
 ﻿using FluentAssertions;
 using Study.TFA.Domain.UseCases.CreateTopic;
 
-namespace Study.TFA.Domain.Tests
+namespace Study.TFA.Domain.Tests.CreateTopic
 {
     public class CreateTopicCommandValidatorShould
     {
@@ -28,10 +28,10 @@ namespace Study.TFA.Domain.Tests
         {
             var validCommand = new CreateTopicCommand(Guid.Parse("5575C79D-8338-40C7-9286-0D371EB02409"), "Hello");
 
-            yield return new object[] { validCommand with { ForumId = Guid.Empty }};
-            yield return new object[] { validCommand with { Title = string.Empty }};
+            yield return new object[] { validCommand with { ForumId = Guid.Empty } };
+            yield return new object[] { validCommand with { Title = string.Empty } };
             yield return new object[] { validCommand with { Title = "   " } };
-            yield return new object[] { validCommand with { Title = string.Join("a", Enumerable.Range(0, 100)) }};
+            yield return new object[] { validCommand with { Title = string.Join("a", Enumerable.Range(0, 100)) } };
         }
 
         [Theory]
@@ -55,6 +55,6 @@ namespace Study.TFA.Domain.Tests
                 .Contain(x => x.PropertyName == expectedInvalidPropertyName && x.ErrorCode == expectedErrorCode);
         }
 
-        
+
     }
 }
