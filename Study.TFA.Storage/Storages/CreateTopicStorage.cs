@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using AutoMapper.QueryableExtensions;
+using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using Study.TFA.Domain.UseCases.CreateTopic;
 
 namespace Study.TFA.Storage.Storages
@@ -8,15 +10,18 @@ namespace Study.TFA.Storage.Storages
         private readonly IGuidFactory guidFactory;
         private readonly IMomentProvider momentProvider;
         private readonly ForumDbContext dbContext;
+        private readonly IMapper mapper;
 
         public CreateTopicStorage(
             IGuidFactory guidFactory,
             IMomentProvider momentProvider,
-            ForumDbContext dbContext)
+            ForumDbContext dbContext,
+            IMapper mapper)
         {
             this.guidFactory = guidFactory;
             this.momentProvider = momentProvider;
             this.dbContext = dbContext;
+            this.mapper = mapper;
         }
 
         public async Task<Domain.Models.Topic> CreateTopic(Guid forumId, Guid userId, string title, 
@@ -36,15 +41,8 @@ namespace Study.TFA.Storage.Storages
             await dbContext.SaveChangesAsync(cancellationToken);
 
             return await dbContext.Topics
-                .Where(t => t.TopicId == topicId)
-                .Select(t => new Domain.Models.Topic()
-                {
-                    Id = t.TopicId,
-                    ForumId = t.ForumId,
-                    UserId = t.UserId,
-                    Title = t.Title,
-                    CreatedAt = t.CreatedAt                    
-                })
+            .Where(t => t.TopicId == topicId)
+                .ProjectTo<Domain.Models.Topic>(mapper.ConfigurationProvider)
                 .FirstAsync(cancellationToken);
         }
     }

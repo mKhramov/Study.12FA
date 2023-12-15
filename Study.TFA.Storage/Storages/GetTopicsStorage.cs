@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
+using Microsoft.EntityFrameworkCore;
 using Study.TFA.Domain.UseCases.GetTopics;
 
 namespace Study.TFA.Storage.Storages
@@ -6,11 +8,14 @@ namespace Study.TFA.Storage.Storages
     internal class GetTopicsStorage : IGetTopicsStorage
     {
         private readonly ForumDbContext dbContext;
+        private readonly IMapper mapper;
 
         public GetTopicsStorage(
-            ForumDbContext dbContext)
+            ForumDbContext dbContext,
+            IMapper mapper)
         {
             this.dbContext = dbContext;
+            this.mapper = mapper;
         }
 
 
@@ -20,16 +25,9 @@ namespace Study.TFA.Storage.Storages
 
             var totalCount = await query.CountAsync(cancellationToken);
             var resources = await query.OrderByDescending(x => x.CreatedAt)
+                .ProjectTo<Domain.Models.Topic>(mapper.ConfigurationProvider)
                 .Skip(skip)
                 .Take(take)
-                .Select(x => new Domain.Models.Topic
-                {
-                    CreatedAt = x.CreatedAt,
-                    ForumId = x.ForumId,
-                    Id = x.TopicId,
-                    Title = x.Title,
-                    UserId = x.UserId
-                })
                 .ToArrayAsync(cancellationToken);
 
             return (resources, totalCount);
