@@ -1,38 +1,19 @@
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
-using Serilog;
-using Serilog.Filters;
-using Study.TFA.API.Mapping;
+using Study.TFA.API.DependencyInjection;
 using Study.TFA.API.Middlewares;
 using Study.TFA.Domain.DependencyInjection;
 using Study.TFA.Storage.DependencyInjection;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Logging configuration
-builder.Services.AddLogging(b => b.AddSerilog(new LoggerConfiguration()
-    .MinimumLevel.Debug()
-    .Enrich.WithProperty("Application", "Study.TFA.API")
-    .Enrich.WithProperty("Environment", builder.Environment.EnvironmentName)
-    .WriteTo.Logger(lc => lc
-        .Filter.ByExcluding(Matching.FromSource("Microsoft"))
-        .WriteTo.OpenSearch(
-            nodeUris: builder.Configuration.GetConnectionString("Logs"),
-            indexFormat: "forum-logs-{0:yyyy.MM.dd}"))
-    .WriteTo.Logger(lc => lc
-        .Filter.ByIncludingOnly(Matching.FromSource("Microsoft"))
-        .WriteTo.OpenSearch(
-            nodeUris: builder.Configuration.GetConnectionString("Logs"),
-            indexFormat: "forum-dbquery-logs-{0:yyyy.MM.dd}"))
-    .WriteTo.Logger(lc => lc.WriteTo.Console())
-    .CreateLogger()));
-
-
 builder.Services
+    .AddApiLogging(builder.Configuration, builder.Environment)
     .AddForumDomain()
     .AddForumStorage(builder.Configuration.GetConnectionString("Postgres") ?? string.Empty);
 
-builder.Services.AddAutoMapper(options => options.AddProfile<ApiProfile>());
+builder.Services.AddAutoMapper(options => options.AddMaps(Assembly.GetExecutingAssembly()));
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();

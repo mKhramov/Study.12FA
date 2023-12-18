@@ -9,7 +9,7 @@ using Study.TFA.Domain.UseCases.GetTopics;
 
 namespace Study.TFA.Domain.DependencyInjection
 {
-    public static class ServiceCollectionException
+    public static class ServiceCollectionExtensions
     {
         public static IServiceCollection AddForumDomain(this IServiceCollection services)
         {

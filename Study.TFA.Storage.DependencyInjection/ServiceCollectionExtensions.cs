@@ -10,7 +10,7 @@ using System.Reflection;
 
 namespace Study.TFA.Storage.DependencyInjection
 {
-    public static class ServiceCollectionException
+    public static class ServiceCollectionExtensions
     {
         public static IServiceCollection AddForumStorage(this IServiceCollection services, string dbConnectionString)
         {
