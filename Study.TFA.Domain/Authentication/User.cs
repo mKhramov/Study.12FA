@@ -1,6 +1,6 @@
 ﻿namespace Study.TFA.Domain.Authentication
 {
-    internal class User : IIdentity
+    public class User : IIdentity
     {
         public User(Guid userId)
         {
@@ -8,5 +8,7 @@
         }
 
         public Guid UserId { get; }
+
+        public static User Guest => new(Guid.Empty);
     }
 }

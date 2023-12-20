@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Study.TFA.Storage;
+using System.Security.Cryptography;
 using Testcontainers.PostgreSql;
 
 namespace Study.TFA.E2E
@@ -16,7 +17,8 @@ namespace Study.TFA.E2E
             var configuratio = new ConfigurationBuilder()
                 .AddInMemoryCollection(new Dictionary<string, string>()
                 {
-                    ["ConnectionStrings:Postgres"] = dbContainer.GetConnectionString()
+                    ["ConnectionStrings:Postgres"] = dbContainer.GetConnectionString(),
+                    ["Authentication:Base64Key"] = Convert.ToBase64String(RandomNumberGenerator.GetBytes(32)),
                 })
                 .Build();
             builder.UseConfiguration(configuratio);

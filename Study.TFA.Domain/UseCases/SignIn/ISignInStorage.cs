@@ -1,6 +1,6 @@
-﻿namespace Study.TFA.Domain.Authentication
+﻿namespace Study.TFA.Domain.UseCases.SignIn
 {
-    public interface IAuthenticationStorage
+    public interface ISignInStorage
     {
         Task<RecognisedUser?> FindUser(string login, CancellationToken cancellationToken);
     }

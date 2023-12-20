@@ -1,16 +1,16 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
-using Study.TFA.Domain.Authentication;
+using Study.TFA.Domain.UseCases.SignIn;
 
 namespace Study.TFA.Storage.Storages
 {
-    internal class AuthenticationStorage : IAuthenticationStorage
+    internal class SignInStorage : ISignInStorage
     {
         private readonly ForumDbContext dbContext;
         private readonly IMapper mapper;
 
-        public AuthenticationStorage(
+        public SignInStorage(
             ForumDbContext dbContext,
             IMapper mapper)
         {

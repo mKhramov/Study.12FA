@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
-using Study.TFA.API.Controllers;
+using Study.TFA.API.Extensions;
 using Study.TFA.Domain.Authorization;
 using Study.TFA.Domain.Exceptions;
 

@@ -4,17 +4,16 @@ using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Study.TFA.Domain.Authorization;
 using Study.TFA.Domain.Exceptions;
-using System.Net;
 
-namespace Study.TFA.API.Controllers
+namespace Study.TFA.API.Extensions
 {
     public static class ProblemDetailsFactoryExtensions
     {
-        public static ProblemDetails CreateFrom(this ProblemDetailsFactory factory, HttpContext httpContext, 
-            IntentionManagerException intentionManagerException) => 
-            factory.CreateProblemDetails(httpContext, 
-                StatusCodes.Status403Forbidden, 
-                "Authorization failed", 
+        public static ProblemDetails CreateFrom(this ProblemDetailsFactory factory, HttpContext httpContext,
+            IntentionManagerException intentionManagerException) =>
+            factory.CreateProblemDetails(httpContext,
+                StatusCodes.Status403Forbidden,
+                "Authorization failed",
                 detail: intentionManagerException.Message);
 
         public static ProblemDetails CreateFrom(this ProblemDetailsFactory factory, HttpContext httpContext,
